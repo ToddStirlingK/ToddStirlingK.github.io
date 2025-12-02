@@ -1,0 +1,124 @@
+---
+title: "Final analysis"
+output: html_document
+date: "2025-11-26"
+---
+
+? What was the effect of CAN on these plants chemical composition?
+? What was the effect of UAN on these plants chemical composition?
+? What effect did the rate of addition of N have on the chemical composition?
+? spices?
+
+```{r message=FALSE, warning=FALSE, include=FALSE}
+library(tidyverse)
+library(easystats)
+library(gganimate)
+library(readxl)
+
+smt1 = read_xlsx('resource/SMTdata.xlsx', sheet = 1)
+
+vars = c("CC", "OA", "Mineral", "Lipids", "SP", "TNC", "Lignin",
+                  "TSC", "NO3", "Protein", "N", "P", "SLA", "C", "N/P", "C/N")
+
+smt1_ = smt1 %>%
+  mutate(across(all_of(vars), ~ as.numeric(.x)))
+
+smt1__ = smt1_[-1, ]
+
+smt1_long = smt1__ %>%
+  pivot_longer(
+    cols = c(CC, OA, Mineral, Lipids, SP, TNC, Lignin, TSC, NO3, Protein,
+             N, P, SLA, C, `N/P`, `C/N`),
+    names_to = "Variable",
+    values_to = "Value"
+  )
+
+#base mean
+smt1_long_mean = smt1_long %>%
+  group_by(Species, Rate, Variable) %>%
+  summarise(Value = mean(Value, na.rm = TRUE), .groups = "drop")
+
+#TSC mean
+smt1__mean = smt1__ %>%
+  group_by(Species, Rate, Approach) %>%
+  summarise(across(where(is.numeric), mean, na.rm = TRUE), .groups = "drop")
+```
+
+
+```{r echo=TRUE, message=TRUE, warning=FALSE}
+base1 = smt1_long_mean %>% 
+  filter(Variable %in% c('Lignin','Lipids','OA','Protein','SLA','SP','TNC','TSC')) %>% 
+  ggplot(aes(x = Rate,
+             y = Value, 
+             group = Species, 
+             color = Species)) +
+  geom_point() +
+  geom_line() +
+  facet_wrap(~ Variable, nrow = 2) +
+  scale_x_continuous(breaks = c(0, 25, 50)) +
+  labs(x = ' ') +
+  theme(legend.position = "none")
+
+```
+
+
+```{r message=FALSE, warning=FALSE, include=FALSE}
+base2 = smt1_long_mean %>% 
+  filter(Variable %in% c('C/N','Mineral','N','N/P')) %>% 
+  ggplot(aes(x = Rate,
+             y = Value, 
+             group = Species, 
+             color = Species)) +
+  geom_point() +
+  geom_line() +
+  facet_wrap(~ Variable) +
+  scale_x_continuous(breaks = c(0, 25, 50)) +
+  labs(x = 'Kg of Nitrogen', y = ' ') +
+  theme(legend.position = "none")
+
+base3 = smt1_long_mean %>% 
+  filter(Variable %in% c('C','CC','NO3','P')) %>% 
+  ggplot(aes(x = Rate,
+             y = Value, 
+             group = Species, 
+             color = Species)) +
+  geom_point() +
+  geom_line() +
+  facet_wrap(~ Variable) +
+  scale_x_continuous(breaks = c(0, 25, 50)) +
+  labs(x = ' ', y = ' ')
+```
+
+
+```{r echo=FALSE, fig.show="hold", message=FALSE, warning=FALSE, out.width="33%"}
+plot(base1)
+plot(base2)
+plot(base3)
+
+```
+
+
+```{r message=TRUE, warning=FALSE}
+smt1__mean %>% 
+  ggplot(aes(x = Rate,
+             y = TSC,
+             color = Species)) +
+  geom_point() +
+  geom_line() +
+  facet_wrap(~ Approach) +
+  scale_x_continuous(breaks = c(0, 25, 50))
+```
+
+```{r message=TRUE, warning=FALSE}
+smt1__ %>% 
+  filter(Approach == 'UAN') %>% 
+  group_by(block) %>% 
+  ggplot(aes(x = Rate,
+             y = TSC,
+             color = Species,
+             group = block)) +
+  geom_point() +
+  geom_path() +
+  facet_wrap(~ Species) +
+  scale_x_continuous(breaks = c(0, 25, 50))
+```
