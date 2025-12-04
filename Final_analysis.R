@@ -119,9 +119,11 @@ smt1__ %>%
   scale_x_continuous(breaks = c(0, 25, 50))
 
 
+?theme
 
 
-
+names(smt3$Species)
+str(smt3$Species)
 
 
 

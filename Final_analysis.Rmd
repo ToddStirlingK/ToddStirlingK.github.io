@@ -1,19 +1,34 @@
 ---
-title: "Final analysis"
+title: "Final Analysis"
 output: html_document
-date: "2025-11-26"
 ---
 
-? What was the effect of CAN on these plants chemical composition?
-? What was the effect of UAN on these plants chemical composition?
-? What effect did the rate of addition of N have on the chemical composition?
-? spices?
+## **Leaf Chemical Composition Change of Subtropical Evergreen Broad-Leaved Forest Through Addition of Nitrogen on Understory And Canopy**
+
+### Introduction
+
+Atmospheric nitrogen deposition has a significant effect on forest ecosystems and plant chemical concentration. A study done by Songbo Tang et al. researched this idea. It was entitled: "Addition of nitrogen to canopy versus understory has different effects on leaf traits of understory plants in a subtropical evergreen broad–leaved forest". This article aims to analyze the data Tang and his team collected to answer the following questions:
+
+Which plant chemicals concentration was effected the most by the addition of Nitrogen?
+
+Which method of the addition of Nitrogen, understory or canopy, was most effective at changing this concentration in the plant?
+
+Which species chemical concentration was most effected through this addition of nitrogen? 
+
+### Matirals and Mehtods
+
+The team added nitrogen by spraying it directly on the understory and on the canopy. The rates they added nitrogen was 0, 25, and 50 kg of nitrogen per hectare per year. They added nitrogen in these rates in three blocks, or locations of plants. After five years they sampled six spices leaves (*Blastus cochinchinensis Lour., Psychotria asiatica Wall., Ardisia quinquegona Blume, Macaranga sampsonii Hance, Alpinia chinensis Hayata, Cibotium barometz (L.) J. Sm.*) that was treated with each rate from each block.
+
+The samples were then processed to determine their chemical concentrations as well as other effects addition of nitrogen had on the leaves. 
+
 
 ```{r message=FALSE, warning=FALSE, include=FALSE}
 library(tidyverse)
 library(easystats)
 library(gganimate)
 library(readxl)
+library(kableExtra)
+library(svglite)
 
 smt1 = read_xlsx('resource/SMTdata.xlsx', sheet = 1)
 
@@ -44,10 +59,81 @@ smt1__mean = smt1__ %>%
   summarise(across(where(is.numeric), mean, na.rm = TRUE), .groups = "drop")
 ```
 
+### Results
+
+**Original Data**
+
+This is the original dataset created by Tang et al.
+
+Approach         | Rate
+---------------- | ------------------------
+CAN = canopy     | 0 = 0 kg N ha–1 year–1
+UAN = understory | 25 = 25 kg N ha–1 year–1
+        -        | 50 = 50 kg N ha–1 year–1
+                 
+Species                               | Chemical 
+------------------------------------- | ----------------------------------------
+BC = *Blastus cochinchinensis Lour.*  | CC = Leaf construction costs
+PR = *Psychotria asiatica Wall.*      | OA = Organic acids
+AQ = *Ardisia quinquegona Blume*      | Mineral = Minerals
+MS = *Macaranga sampsonii Hance*      | Lipids = Lipids
+AC = *Alpinia chinensis Hayata*       | SP = Soluble phenolics
+CB = *Cibotium barometz (L.) J. Sm.*  | TNC = Total non–structural carbohydrates
+                -                     | Lignin = Lignin
+                -                     | TSC = Total structural carbohydrates
+                -                     | NO3 = Nitrate
+                -                     | Protein = Protein
+                -                     | N = Leaf nitrogen concentrations
+                -                     | P = Leaf phosphorus concentrations
+                -                     | SLA = Specific leaf area
+                -                     | C = Leaf carbon concentrations
+                -                     | N/P = Leaf N/P ratio
+                -                     | C/N = Leaf C/N ratio
+                                      
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+smt1__ %>% kable() %>% kable_classic() %>% 
+  scroll_box(height = '200px')
+
+
+```
+
+**Pivot Longer Data**
+
+This data was very clean and easy to read from it's creation. But to be able to determine which chemicals concentration was most effected by the addition of nitrogen the many columns containing the different chemicals concentrations needed to be pivoted longer. This was done by making a column named 'variable' which pivoted all the chemical concentration column titles to rows and making a 'values' column which contained each numeric concentration values corresponding to the type of chemical (variable), block, species, ect. 
+
+Note: Each chemical concentration value listed in this table do not share the same units. 
+
+```{r echo=TRUE, message=FALSE, warning=FALSE}
+
+smt1_long = smt1__ %>%
+  pivot_longer(
+    cols = c(CC, OA, Mineral, Lipids, SP, TNC, Lignin, TSC, NO3, Protein,
+             N, P, SLA, C, `N/P`, `C/N`),
+    names_to = "Variable",
+    values_to = "Value"
+  )
+
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+
+smt1_long %>% kable() %>% kable_classic() %>% 
+  scroll_box(height = '200px')
+
+```
+
+### Discussion
+
+**Overall Chemical change**
+
+Using the pivoted longer data set each type of chemical was graphed to be able to observe the difference the addition of nitrogen had on their concentrations. Since each chemical existed in very different concentrations and units all chemicals that had generally similar numeric values in their concentrations were paired together. This would make it possible to see any significant trends between the addition of nitrogen and change of concentration for that chemical.
+
+Each species listed were tested on in the three blocks with the three rates of nitrogen addition. This means that there should be three points at each rate (0,25,50) for each species. To make the initial observation easier each species three points at each rate were averaged. 
 
 ```{r echo=TRUE, message=TRUE, warning=FALSE}
-base1 = smt1_long_mean %>% 
-  filter(Variable %in% c('Lignin','Lipids','OA','Protein','SLA','SP','TNC','TSC')) %>% 
+base0 = smt1_long_mean %>% 
+  filter(Variable %in% c('Lignin','Lipids','OA','Protein')) %>% 
   ggplot(aes(x = Rate,
              y = Value, 
              group = Species, 
@@ -56,13 +142,32 @@ base1 = smt1_long_mean %>%
   geom_line() +
   facet_wrap(~ Variable, nrow = 2) +
   scale_x_continuous(breaks = c(0, 25, 50)) +
-  labs(x = ' ') +
-  theme(legend.position = "none")
+  labs(x = NULL) +
+  theme(legend.position = "none",
+        axis.text.x = element_blank(),
+        strip.text = element_text(size = 16),
+        axis.title.y = element_text(size = 16))
 
 ```
 
 
 ```{r message=FALSE, warning=FALSE, include=FALSE}
+
+base1 = smt1_long_mean %>% 
+  filter(Variable %in% c('SLA','SP','TNC','TSC')) %>% 
+  ggplot(aes(x = Rate,
+             y = Value, 
+             group = Species, 
+             color = Species)) +
+  geom_point() +
+  geom_line() +
+  facet_wrap(~ Variable, nrow = 2) +
+  scale_x_continuous(breaks = c(0, 25, 50)) +
+  labs(x = NULL, y = ' ') +
+  theme(axis.text.x = element_blank(),
+        strip.text = element_text(size = 16),
+        legend.position = "none")
+
 base2 = smt1_long_mean %>% 
   filter(Variable %in% c('C/N','Mineral','N','N/P')) %>% 
   ggplot(aes(x = Rate,
@@ -73,8 +178,11 @@ base2 = smt1_long_mean %>%
   geom_line() +
   facet_wrap(~ Variable) +
   scale_x_continuous(breaks = c(0, 25, 50)) +
-  labs(x = 'Kg of Nitrogen', y = ' ') +
-  theme(legend.position = "none")
+  labs(x = 'Kg of Nitrogen') +
+  theme(legend.position = "none",
+        strip.text = element_text(size = 16),
+        axis.title.x = element_text(size = 16),
+        axis.title.y = element_text(size = 16))
 
 base3 = smt1_long_mean %>% 
   filter(Variable %in% c('C','CC','NO3','P')) %>% 
@@ -86,17 +194,30 @@ base3 = smt1_long_mean %>%
   geom_line() +
   facet_wrap(~ Variable) +
   scale_x_continuous(breaks = c(0, 25, 50)) +
-  labs(x = ' ', y = ' ')
+  labs(x = 'Kg of Nitrogen', y = ' ') +
+  theme(legend.position = "none",
+        strip.text = element_text(size = 16),
+        axis.title.x = element_text(size = 16))
+
 ```
 
-
-```{r echo=FALSE, fig.show="hold", message=FALSE, warning=FALSE, out.width="33%"}
+```{r echo=FALSE, fig.show="hold", message=FALSE, warning=FALSE, out.width="50%"}
+plot(base0)
 plot(base1)
+
+```
+
+```{r echo=FALSE, fig.show="hold", message=FALSE, warning=FALSE, out.width="50%"}
 plot(base2)
 plot(base3)
 
 ```
 
+As we can see from these graphs many chemicals concentrations changed and many did not. Though some chemicals had a change in their concentration many do not have coloration and are random. Some chemicals (lignin, soluble phenolics) seem to have one species that has correlation and others seem to have little correlation (SLA, TNC, N/P) but one stands out has having the most consistent difference in chemical composition due to the addition of nitrogen: Total structural carbohydrates (TSC). 
+
+**Understory vs Canopy**
+
+In this graph the concentrations of TSC for each species (in mg of TSC per g of leaf tissue), the rate of addition of nitrogen, and the method of addition (CAN = canopy, UAN = understory) is shown. Each of the species for the three rates are still averaged. 
 
 ```{r message=TRUE, warning=FALSE}
 smt1__mean %>% 
@@ -106,8 +227,15 @@ smt1__mean %>%
   geom_point() +
   geom_line() +
   facet_wrap(~ Approach) +
-  scale_x_continuous(breaks = c(0, 25, 50))
+  scale_x_continuous(breaks = c(0, 25, 50)) +
+  labs(y = 'TSC (mg/g)')
 ```
+
+From this we see there is a strong positive correlation for most species between the addition of nitrogen on the understory to the concentration of TSC. There does not seem to be as a consistent correlation for the addition on the canopy. 
+
+**Species with most change**
+
+This graph depicts a closer view of each species treated in each block with each rate of addition. The different blocks are shown through different point shapes. 
 
 ```{r message=TRUE, warning=FALSE}
 smt1__ %>% 
@@ -116,9 +244,45 @@ smt1__ %>%
   ggplot(aes(x = Rate,
              y = TSC,
              color = Species,
-             group = block)) +
-  geom_point() +
+             group = block,
+             shape = block)) +
+  geom_point(size = 3) +
   geom_path() +
   facet_wrap(~ Species) +
-  scale_x_continuous(breaks = c(0, 25, 50))
+  scale_x_continuous(breaks = c(0, 25, 50)) +
+  labs(y = 'TSC (mg/g)')
 ```
+
+There does not seems to be any consistent trend in block effecting change in concentrations. For most species there seems to be some correlation between the addition of nitrogen to TSC (MS, CB) but for *Psychotria asiatica Wall.* there seems to be a strong correlation. 
+
+To calculate the accuracy of this correlation a model was made based on the TSC values and the rate to determine the r-squared, RMSE, and P value. 
+
+```{r echo=TRUE, message=TRUE, warning=FALSE}
+
+smt1_PR <- smt1__ %>%
+  filter(Species == "PR")
+
+mod1 <- lm(TSC ~ Rate, data = smt1_PR)
+
+```
+
+```{r echo=TRUE, message=TRUE, warning=FALSE}
+# r squared
+summary(mod1)$r.squared
+
+#RMSE
+pred1  = predict(mod1, smt1__)
+rmse  = sqrt(mean((smt1__$TSC - pred1)^2))
+rmse
+
+#P value
+summary(mod1)$coefficients[2, 4]
+
+```
+
+These calculations tell us that the correlation between the concentration of TSC and the addition of nitrogen has strong explanatory power (R^2), a moderately large prediction error (RMSE), but is very statistically significant (P value). This means that the addition of nitrogen has a strong and statistically significant effect on the concentration of TSC in *Psychotria asiatica Wall.*, but this model is poor at explaining the variation, probably due to typical biological effects and inconsistencies. 
+
+### Conclusion
+
+In conclusion, the addition of nitrogen to the canopy of Subtropical Evergreen Broad-Leaved Forest positively effects the concentration of TSC in *Psychotria asiatica Wall.*. This conclusion is statistically significant and has strong explanatory power, but has a lot of variation due to biological effects and inconsistencies. Looking closer at the *Psychotria asiatica Wall.* and finding the reasons it's TSC concentrations increases with the addition of nitrogen to the canopy (especially when added with 50 kg hec- year-) would be inportant future research. 
+
