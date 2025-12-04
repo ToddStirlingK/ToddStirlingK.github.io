@@ -92,19 +92,24 @@ CB = *Cibotium barometz (L.) J. Sm.*  | TNC = Total non–structural carbohydrat
                                       
 ```{r echo=FALSE, message=FALSE, warning=FALSE}
 
-smt1__ %>% kable() %>% kable_classic() %>% 
+smt1 %>% kable() %>% kable_classic() %>% 
   scroll_box(height = '200px')
 
 
 ```
 
-**Pivot Longer Data**
+**Cleaned pivot Longer Data**
 
-This data was very clean and easy to read from it's creation. But to be able to determine which chemicals concentration was most effected by the addition of nitrogen the many columns containing the different chemicals concentrations needed to be pivoted longer. This was done by making a column named 'variable' which pivoted all the chemical concentration column titles to rows and making a 'values' column which contained each numeric concentration values corresponding to the type of chemical (variable), block, species, ect. 
+This data was fairly clean and easy to read from it's creation. The only cleaning consisted of removing the first row and make all concentrations as numeric. But to be able to determine which chemicals concentration was most effected by the addition of nitrogen the many columns containing the different chemicals concentrations needed to be pivoted longer. This was done by making a column named 'variable' which pivoted all the chemical concentration column titles to rows and making a 'values' column which contained each numeric concentration values corresponding to the type of chemical (variable), block, species, ect. 
 
 Note: Each chemical concentration value listed in this table do not share the same units. 
 
 ```{r echo=TRUE, message=FALSE, warning=FALSE}
+
+smt1_ = smt1 %>%
+  mutate(across(all_of(vars), ~ as.numeric(.x)))
+
+smt1__ = smt1_[-1, ]
 
 smt1_long = smt1__ %>%
   pivot_longer(
