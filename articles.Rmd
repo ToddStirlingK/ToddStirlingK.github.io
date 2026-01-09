@@ -1,0 +1,91 @@
+---
+title: "R Markdown Gallery"
+output:
+  html_document:
+    toc_float: false
+    includes:
+      before_body: [include_header.html, include_header_navpage.html]
+---
+
+<!--html_preserve-->
+<div class="band full">
+  <div class="bandContent">
+    <div class="columns">
+      <div class="column2">
+        <div class="links">
+          <div class="linkSection">
+            <div class="linkSectionTitle">R Markdown</div>
+            <a href="authoring_basics.html">Markdown Basics</a>
+            <a href="authoring_pandoc_markdown.html">Pandoc Markdown</a>
+            <a href="https://bookdown.org/yihui/rmarkdown/r-code.html">R Code Chunks</a>
+            <a href="https://bookdown.org/yihui/rmarkdown/language-engines.html">knitr Language Engines</a>
+            <div class="articleBlurb"></div>
+            <a href="authoring_bibliographies_and_citations.html">Bibliographies & Citations</a>
+            <a href="authoring_migrating_from_v1.html">Migrating from v1</a>
+          </div>
+          <div class="linkSection">
+            <div class="linkSectionTitle">Cheat Sheets</div>
+            <a href="https://github.com/rstudio/cheatsheets/raw/master/rmarkdown-2.0.pdf">Cheat Sheet [PDF]</a>
+            <a href="https://www.rstudio.com/wp-content/uploads/2015/03/rmarkdown-reference.pdf">Reference Guide [PDF]</a>
+          </div>
+          <div class="linkSection">
+            <div class="linkSectionTitle">Shiny</div>
+            <a href="https://bookdown.org/yihui/rmarkdown/shiny-documents.html">Interactive Documents</a>
+            <a href="https://bookdown.org/yihui/rmarkdown/shiny-embedded.html">Embedded Shiny Apps</a>
+            <a href="https://bookdown.org/yihui/rmarkdown/shiny-widgets.html">Creating Shiny Widgets</a>
+            <a href="https://bookdown.org/yihui/rmarkdown/shiny-delay.html">Advanced Topics</a>
+            <a href="https://bookdown.org/yihui/rmarkdown/shiny-args.html">Setting Output args via Render functions</a>
+          </div>
+        </div>
+      </div>
+    
+      <div class="column2">
+        <div class="links">
+          <div class="linkSection">
+            <div class="linkSectionTitle">Basics</div>
+            <a href="articles_intro.html">Introduction to R Markdown</a>
+            <a href="articles_interactive.html">Introduction to interactive documents</a>
+            <a href="articles_integration.html">R Markdown integration in the RStudio IDE</a>
+          </div>
+          <div class="linkSection">
+            <div class="linkSectionTitle">Websites</div>
+            <a href="https://bookdown.org/yihui/rmarkdown/rmarkdown-site.html">R Markdown Websites</a>
+            <a href="https://bookdown.org/yihui/rmarkdown/rmarkdown-site.html">Custom Site Generators</a>
+          </div>
+          <div class="linkSection">
+            <div class="linkSectionTitle">Developer</div>
+            <a href="https://bookdown.org/yihui/rmarkdown/html-widgets.html">HTML Widgets</a>
+            <a href="https://bookdown.org/yihui/rmarkdown/parameterized-reports.html">Parameterized Reports</a>
+            <a href="https://bookdown.org/yihui/rmarkdown/document-templates.html">Document Templates</a>
+            <a href="https://bookdown.org/yihui/rmarkdown/new-formats.html">Creating New Formats</a>
+            <a href="https://github.com/rstudio/rmarkdown">R Markdown on GitHub</a>
+          </div>    
+        </div>
+      </div>
+    
+     <div class="column2">
+        <div class="links">
+          <div class="linkSection">
+            <div class="linkSectionTitle">Output Formats</div>
+            <a href="articles_docx.html">Happy collaboration with Rmd to docx</a>
+             <a href="articles_mail_merge.html">Mail merge with R Markdown</a>
+            <a href="articles_beamer.html">Moving from Beamer to R Markdown</a>
+            <a href="articles_report_from_r_script.html">Compiling Reports from R Scripts</a>
+          </div>
+  
+  
+          <div class="linkSection">
+            <div class="linkSectionTitle">Embedding Code</div>
+            <a href="articles_verbatim.html">Get verbatim R chunks into R Markdown</a>
+            <a href="articles_verbatim2.html">Verbatim Chunks in R Markdown (Alternate method)</a>
+            <a href="articles_rdata.html">Embedding RData files in Rmarkdown files</a>
+            <a href="http://yihui.name/knitr/options">knitr code chunk documentation</a>
+            <a href="http://yihui.name/knitr/demo/showcase/">The knitr showcase (Examples and links)</a>
+          </div>
+        </div>
+      </div>
+    
+    </div>
+  </div>
+</div>
+<!--/html_preserve-->
