@@ -98,7 +98,7 @@ smt1 %>% kable() %>% kable_classic() %>%
 
 ```
 
-**Cleaned pivot Longer Data**
+**Cleaned Pivot Longer Data**
 
 This data was fairly clean and easy to read from it's creation. The only cleaning consisted of removing the first row and make all concentrations as numeric. But to be able to determine which chemicals concentration was most effected by the addition of nitrogen the many columns containing the different chemicals concentrations needed to be pivoted longer. This was done by making a column named 'variable' which pivoted all the chemical concentration column titles to rows and making a 'values' column which contained each numeric concentration values corresponding to the type of chemical (variable), block, species, ect. 
 
@@ -291,3 +291,7 @@ These calculations tell us that the correlation between the concentration of TSC
 
 In conclusion, the addition of nitrogen to the canopy of Subtropical Evergreen Broad-Leaved Forest positively effects the concentration of TSC in *Psychotria asiatica Wall.*. This conclusion is statistically significant and has strong explanatory power, but has a lot of variation due to biological effects and inconsistencies. Looking closer at the *Psychotria asiatica Wall.* and finding the reasons it's TSC concentrations increases with the addition of nitrogen to the canopy (especially when added with 50 kg hec- year-) would be inportant future research. 
 
+
+
+
+[Main page](./index.html)

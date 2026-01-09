@@ -1,0 +1,16 @@
+---
+title: "Resumé"
+---
+
+```{r out.width="60%", echo=FALSE}
+knitr::include_graphics("./Stirling_Todd_Resume_(Chem)_copy.jpg")
+```
+
+
+### [Download](./Stirling_Todd_Resume_(Chem)_copy.docx)
+
+
+
+[Main page](./index.html)
+
+

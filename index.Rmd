@@ -6,7 +6,7 @@ output: html_document
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
-## [ABOUT ME](./about-me) | [CV](./about-me/Fearn_CV.pdf) | [BIOL-3100-Final-Project](./Final_analysis.html)##
+## [Resumé](./resume.html) | [Linkedin](https://www.linkedin.com/in/stirling-todd-80a086359) | [Informatics for Biologists Final Project](./Final_analysis.html)##
 
 # **Stirling Todd - Botanist/Plant chemist** #
 
